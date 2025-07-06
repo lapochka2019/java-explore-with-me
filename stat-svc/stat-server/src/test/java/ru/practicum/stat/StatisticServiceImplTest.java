@@ -48,7 +48,7 @@ public class StatisticServiceImplTest {
         assertEquals(hitCreateDto.getIp(), hitDto.getIp());
         assertEquals(hitCreateDto.getApp(), hitDto.getApp());
         assertEquals(hitCreateDto.getUri(), hitDto.getUri());
-        assertEquals(hitCreateDto.getCreated(), hitDto.getCreated());
+        assertEquals(hitCreateDto.getTimestamp(), hitDto.getTimestamp());
     }
 
     @Test

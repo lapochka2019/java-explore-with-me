@@ -28,7 +28,7 @@ public class HitMapperTest {
         assertEquals(hitDto.getIp(), hit.getIp());
         assertEquals(hitDto.getApp(), hit.getApp());
         assertEquals(hitDto.getUri(), hit.getUri());
-        assertEquals(hitDto.getCreated(), hit.getCreated());
+        assertEquals(hitDto.getTimestamp(), hit.getTimestamp());
     }
 
     @DisplayName("Преобразовать null в HitDto")
@@ -46,7 +46,7 @@ public class HitMapperTest {
         assertEquals(hitCreateDto.getIp(), hit.getIp());
         assertEquals(hitCreateDto.getApp(), hit.getApp());
         assertEquals(hitCreateDto.getUri(), hit.getUri());
-        assertEquals(hitCreateDto.getCreated(), hit.getCreated());
+        assertEquals(hitCreateDto.getTimestamp(), hit.getTimestamp());
     }
 
     @DisplayName("Преобразовать null в Hit")

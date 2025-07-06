@@ -12,7 +12,7 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT new ru.practicum.stat.model.Statistic(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
             "FROM Hit h " +
-            "WHERE h.created BETWEEN ?1 AND ?2 " +
+            "WHERE h.timestamp BETWEEN ?1 AND ?2 " +
             "AND h.uri IN (?3) " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(DISTINCT h.ip) DESC")
@@ -20,14 +20,14 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT new ru.practicum.stat.model.Statistic(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
             "FROM Hit h " +
-            "WHERE h.created BETWEEN ?1 AND ?2 " +
+            "WHERE h.timestamp BETWEEN ?1 AND ?2 " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(DISTINCT h.ip) DESC")
     List<Statistic> findStatsUniqueIpAllUris(LocalDateTime start, LocalDateTime end);
 
     @Query("SELECT new ru.practicum.stat.model.Statistic(h.app, h.uri, COUNT(h.ip)) " +
             "FROM Hit h " +
-            "WHERE h.created BETWEEN ?1 AND ?2 " +
+            "WHERE h.timestamp BETWEEN ?1 AND ?2 " +
             "AND h.uri IN (?3) " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) DESC")
@@ -35,7 +35,7 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT new ru.practicum.stat.model.Statistic(h.app, h.uri, COUNT(h.ip)) " +
             "FROM Hit h " +
-            "WHERE h.created BETWEEN ?1 AND ?2 " +
+            "WHERE h.timestamp BETWEEN ?1 AND ?2 " +
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) DESC")
     List<Statistic> findStatsAllUris(LocalDateTime start, LocalDateTime end);
