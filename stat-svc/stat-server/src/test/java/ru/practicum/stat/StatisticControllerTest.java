@@ -1,5 +1,6 @@
 package ru.practicum.stat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class StatisticControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private StatisticService statisticsService;
 
@@ -40,14 +44,7 @@ public class StatisticControllerTest {
 
         mockMvc.perform(post("/hit")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                    {
-                                      "app": "app",
-                                      "uri": "/uri",
-                                      "ip": "192.168.0.1",
-                                      "timestamp": "%s"
-                                    }
-                                """.formatted(now)))
+                        .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.app").value("app"))

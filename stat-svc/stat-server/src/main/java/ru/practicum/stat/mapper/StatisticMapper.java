@@ -7,7 +7,7 @@ import ru.practicum.stat.model.Statistic;
 @Mapper(componentModel = "spring")
 public interface StatisticMapper {
 
-    StatisticDto toStatisticDto (Statistic statistic);
+    StatisticDto toStatisticDto(Statistic statistic);
 
-    Statistic toStatistic (StatisticDto statisticDto);
+    Statistic toStatistic(StatisticDto statisticDto);
 }

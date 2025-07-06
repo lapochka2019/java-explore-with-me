@@ -1,6 +1,8 @@
 package ru.practicum.stat;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,7 +24,7 @@ public class StatisticServiceImplTest {
     StatisticService statisticService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         HitCreateDto hitCreateDto1 = new HitCreateDto("app1", "some uri1", "123.123.0.0", LocalDateTime.now().minusDays(1));
         HitCreateDto hitCreateDto2 = new HitCreateDto("app", "some uri2", "123.124.0.0", LocalDateTime.now().minusHours(2));
         HitCreateDto hitCreateDto3 = new HitCreateDto("app", "some uri3", "123.125.0.0", LocalDateTime.now());
