@@ -25,7 +25,7 @@ public class StatisticServiceImp implements StatisticService {
     private final StatisticRepository statisticRepository;
 
     private final HitMapper hitMapper;
-    
+
     private final StatisticMapper statisticMapper;
 
     @Override
@@ -40,9 +40,11 @@ public class StatisticServiceImp implements StatisticService {
     @Override
     public List<StatisticDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         log.info("Получение статистики с start={}, end={}, uris={}, unique={}", start, end, uris, unique);
-
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Дата начала диапазона должна быть ДО даты конца диапазона");
+        }
         List<Statistic> viewStats;
-        
+
         if (unique) {
             if (uris != null && !uris.isEmpty()) {
                 viewStats = statisticRepository.findStatsUniqueIp(start, end, uris);
