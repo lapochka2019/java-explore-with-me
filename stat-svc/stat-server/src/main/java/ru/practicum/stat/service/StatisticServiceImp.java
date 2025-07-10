@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.stat.HitCreateDto;
 import ru.practicum.stat.HitDto;
-import ru.practicum.stat.StatisticDto;
+import ru.practicum.stat.ViewStatsDto;
 import ru.practicum.stat.mapper.HitMapper;
-import ru.practicum.stat.mapper.StatisticMapper;
+import ru.practicum.stat.mapper.ViewStatsMapper;
 import ru.practicum.stat.model.Hit;
-import ru.practicum.stat.model.Statistic;
+import ru.practicum.stat.model.ViewStats;
+import ru.practicum.stat.repository.StatisticRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,11 +26,11 @@ public class StatisticServiceImp implements StatisticService {
 
     private final HitMapper hitMapper;
 
-    private final StatisticMapper statisticMapper;
+    private final ViewStatsMapper viewStatsMapper;
 
     @Override
-    public HitDto createHit(HitCreateDto createDto) {
-        Hit hit = hitMapper.createDtoToHit(createDto);
+    public HitDto createHit(HitDto createDto) {
+        Hit hit = hitMapper.hitDtoToHit(createDto);
         log.info("Создан Hit с данными: {}", hit);
         Hit createdHit = statisticRepository.save(hit);
         return hitMapper.hitToHitDto(createdHit);
@@ -38,12 +38,12 @@ public class StatisticServiceImp implements StatisticService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<StatisticDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+    public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         log.info("Получение статистики с start={}, end={}, uris={}, unique={}", start, end, uris, unique);
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Дата начала диапазона должна быть ДО даты конца диапазона");
         }
-        List<Statistic> viewStats;
+        List<ViewStats> viewStats;
 
         if (unique) {
             if (uris != null && !uris.isEmpty()) {
@@ -61,7 +61,7 @@ public class StatisticServiceImp implements StatisticService {
         log.info("Получена статистика: {}", viewStats);
 
         return viewStats != null ? viewStats.stream()
-                .map(statisticMapper::toStatisticDto)
+                .map(viewStatsMapper::toStatisticDto)
                 .collect(Collectors.toList()) : List.of();
     }
 }

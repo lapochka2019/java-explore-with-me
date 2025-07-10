@@ -36,7 +36,7 @@ public class StatisticsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createHit(HttpServletRequest request) {
-        HitCreateDto hitCreateDto = new HitCreateDto(appName, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
+        HitDto hitCreateDto = new HitDto(0L, appName, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
         return post(hitCreateDto, "/hit");
     }
 

@@ -1,12 +1,12 @@
-package ru.practicum.stat.service;
+package ru.practicum.stat.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.stat.HitCreateDto;
 import ru.practicum.stat.HitDto;
-import ru.practicum.stat.StatisticDto;
+import ru.practicum.stat.ViewStatsDto;
+import ru.practicum.stat.service.StatisticService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,13 +19,13 @@ public class StatisticController {
     private final StatisticService statisticsService;
 
     @PostMapping("/hit")
-    public HitDto create(@RequestBody HitCreateDto hit) {
+    public HitDto create(@RequestBody HitDto hit) {
         log.info("Запрос на создание нового Hit: {}", hit);
         return statisticsService.createHit(hit);
     }
 
     @GetMapping("/stats")
-    public List<StatisticDto> getStats(
+    public List<ViewStatsDto> getStats(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
             @RequestParam(required = false) List<String> uris,

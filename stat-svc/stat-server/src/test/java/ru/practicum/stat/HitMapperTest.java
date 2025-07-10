@@ -38,11 +38,11 @@ public class HitMapperTest {
         assertNull(hitDto);
     }
 
-    @DisplayName("Преобразовать корректный createDtoToHit в Hit")
+    @DisplayName("Преобразовать корректный HitDto в Hit")
     @Test
     void createDtoToHit_allFieldsFilled_returnCorrectHit() {
-        HitCreateDto hitCreateDto = new HitCreateDto("app", "some uri", "123.123.0.0", LocalDateTime.now());
-        Hit hit = hitMapper.createDtoToHit(hitCreateDto);
+        HitDto hitCreateDto = new HitDto(1L,"app", "some uri", "123.123.0.0", LocalDateTime.now());
+        Hit hit = hitMapper.hitDtoToHit(hitCreateDto);
         assertEquals(hitCreateDto.getIp(), hit.getIp());
         assertEquals(hitCreateDto.getApp(), hit.getApp());
         assertEquals(hitCreateDto.getUri(), hit.getUri());
@@ -52,7 +52,7 @@ public class HitMapperTest {
     @DisplayName("Преобразовать null в Hit")
     @Test
     void createDtoToHit_withNull_returnNullHit() {
-        Hit hit = hitMapper.createDtoToHit(null);
+        Hit hit = hitMapper.hitDtoToHit(null);
         assertNull(hit);
     }
 }

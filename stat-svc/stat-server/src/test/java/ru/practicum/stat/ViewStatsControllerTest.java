@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.stat.service.StatisticController;
+import ru.practicum.stat.controller.StatisticController;
 import ru.practicum.stat.service.StatisticService;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(StatisticController.class)
 @DisplayName("Тестирование StatisticController")
-public class StatisticControllerTest {
+public class ViewStatsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,10 +37,10 @@ public class StatisticControllerTest {
     void createHit_shouldReturnCreatedHitDto() throws Exception {
         LocalDateTime now = LocalDateTime.now();
 
-        HitCreateDto requestDto = new HitCreateDto("app", "/uri", "192.168.0.1", now);
+        HitDto requestDto = new HitDto(0L,"app", "/uri", "192.168.0.1", now);
         HitDto responseDto = new HitDto(1L, "app", "/uri", "192.168.0.1", now);
 
-        when(statisticsService.createHit(any(HitCreateDto.class))).thenReturn(responseDto);
+        when(statisticsService.createHit(any(HitDto.class))).thenReturn(responseDto);
 
         mockMvc.perform(post("/hit")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -56,8 +56,8 @@ public class StatisticControllerTest {
         LocalDateTime start = LocalDateTime.of(2024, 1, 1, 10, 0);
         LocalDateTime end = LocalDateTime.of(2024, 1, 2, 10, 0);
 
-        StatisticDto statDto = new StatisticDto("app", "/uri", 5L);
-        List<StatisticDto> stats = List.of(statDto);
+        ViewStatsDto statDto = new ViewStatsDto("app", "/uri", 5L);
+        List<ViewStatsDto> stats = List.of(statDto);
 
         when(statisticsService.getStats(eq(start), eq(end), isNull(), eq(false))).thenReturn(stats);
 

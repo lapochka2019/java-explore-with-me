@@ -4,52 +4,52 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.practicum.stat.mapper.StatisticMapper;
-import ru.practicum.stat.model.Statistic;
+import ru.practicum.stat.mapper.ViewStatsMapper;
+import ru.practicum.stat.model.ViewStats;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @DisplayName("Тестирование StatisticMapper")
-public class StatisticMapperTest {
+public class ViewStatsMapperTest {
 
     @Autowired
-    StatisticMapper statisticMapper;
+    ViewStatsMapper viewStatsMapper;
 
     @DisplayName("Преобразовать корректный Statistic в StatisticDto")
     @Test
     void toStatisticDto_allStatisticFieldsFilled_returnStatisticDto() {
-        Statistic statistic = new Statistic("app", "some uri", 5L);
-        StatisticDto statisticDto = statisticMapper.toStatisticDto(statistic);
-        assertEquals(statisticDto.getApp(), statistic.getApp());
-        assertEquals(statisticDto.getUri(), statistic.getUri());
-        assertEquals(statisticDto.getHits(), statistic.getHits());
+        ViewStats viewStats = new ViewStats("app", "some uri", 5L);
+        ViewStatsDto viewStatsDto = viewStatsMapper.toStatisticDto(viewStats);
+        assertEquals(viewStatsDto.getApp(), viewStats.getApp());
+        assertEquals(viewStatsDto.getUri(), viewStats.getUri());
+        assertEquals(viewStatsDto.getHits(), viewStats.getHits());
     }
 
     @DisplayName("Преобразовать null в StatisticDto")
     @Test
     void toStatisticDto_withNullStatistic_returnNullStatisticDto() {
-        StatisticDto statisticDto = statisticMapper.toStatisticDto(null);
-        assertNull(statisticDto);
+        ViewStatsDto viewStatsDto = viewStatsMapper.toStatisticDto(null);
+        assertNull(viewStatsDto);
 
     }
 
     @DisplayName("Преобразовать корректный StatisticDto в Statistic")
     @Test
     void toStatisticDto_allStatisticDtoFieldsFilled_returnStatistic() {
-        StatisticDto statisticDto = new StatisticDto("app", "some uri", 5L);
-        Statistic statistic = statisticMapper.toStatistic(statisticDto);
-        assertEquals(statisticDto.getApp(), statistic.getApp());
-        assertEquals(statisticDto.getUri(), statistic.getUri());
-        assertEquals(statisticDto.getHits(), statistic.getHits());
+        ViewStatsDto viewStatsDto = new ViewStatsDto("app", "some uri", 5L);
+        ViewStats viewStats = viewStatsMapper.toStatistic(viewStatsDto);
+        assertEquals(viewStatsDto.getApp(), viewStats.getApp());
+        assertEquals(viewStatsDto.getUri(), viewStats.getUri());
+        assertEquals(viewStatsDto.getHits(), viewStats.getHits());
     }
 
     @DisplayName("Преобразовать null в Statistic")
     @Test
     void toStatistic_withNullStatisticDto_returnNullStatistic() {
-        Statistic statistic = statisticMapper.toStatistic(null);
-        assertNull(statistic);
+        ViewStats viewStats = viewStatsMapper.toStatistic(null);
+        assertNull(viewStats);
 
     }
 }
