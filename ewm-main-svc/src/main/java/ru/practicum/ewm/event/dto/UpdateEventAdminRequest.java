@@ -1,0 +1,40 @@
+package ru.practicum.ewm.event.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.practicum.ewm.location.model.Location;
+import ru.practicum.ewm.utils.StateAction;
+
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateEventAdminRequest {
+    @Size(max = 2000, message = "Длина аннотации не должна превышать 2000 символов")
+    @Size(min = 20, message = "Длина аннотации не должна быть не меньше 20")
+    private String annotation;
+    private Long category;
+
+    @Size(max = 7000, message = "Длина описания не должна превышать 7000 символов")
+    @Size(min = 20, message = "Длина описания не должна быть не меньше 20")
+    private String description;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime eventDate;
+    private Location location;
+    private Boolean paid;
+
+    @Min(value = 0, message = "Лимит участников не может быть отрицательным")
+    private Integer participantLimit;
+    private Boolean requestModeration;
+    private StateAction stateAction;
+
+    @Size(max = 120, message = "Длина аннотации не должна превышать 120 символов")
+    @Size(min = 3, message = "Длина аннотации не должна быть не меньше 3")
+    private String title;
+}

@@ -1,0 +1,21 @@
+package ru.practicum.ewm.request.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.practicum.ewm.utils.RequestStatus;
+
+import java.util.Collection;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class EventRequestStatusUpdateRequest {
+    @NotEmpty(message = "Ваш список запросов пуст")
+    private Collection<Long> requestIds;
+
+    @NotBlank(message = "Статус запросов не указан")
+    private RequestStatus status;
+}

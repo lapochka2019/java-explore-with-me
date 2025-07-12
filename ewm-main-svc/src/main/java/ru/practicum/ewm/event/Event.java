@@ -2,9 +2,9 @@ package ru.practicum.ewm.event;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.practicum.ewm.categories.Category;
-import ru.practicum.ewm.location.Location;
-import ru.practicum.ewm.user.User;
+import ru.practicum.ewm.categories.model.Category;
+import ru.practicum.ewm.location.model.Location;
+import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.utils.EventState;
 
 import java.time.LocalDateTime;
