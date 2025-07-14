@@ -39,10 +39,11 @@ public class AdminUserControllerTest {
     private UserService userService;
 
     @MockBean
-    private UserRepository userRepository; // может понадобиться, если используются кастомные методы
+    private UserRepository userRepository;
 
+    @DisplayName("Успешное создание игрока")
     @Test
-    void shouldReturnCreated_whenUserIsCreated() throws Exception {
+    void createUser_correctUser_shouldReturnCreated() throws Exception {
         UserCreateDto dto = new UserCreateDto("User Name", "user@mail.ru");
 
         User createdUser = new User(1L, "User Name", "user@mail.ru");
@@ -57,8 +58,9 @@ public class AdminUserControllerTest {
                 .andExpect(jsonPath("$.email").value("user@mail.ru"));
     }
 
+    @DisplayName("Попытка повторно создать пользователя")
     @Test
-    void shouldReturnConflict_whenEmailAlreadyExists() throws Exception {
+    void createUser_existUser_shouldReturnConflict() throws Exception {
         UserCreateDto dto = new UserCreateDto("User Name", "user@mail.ru");
 
         when(userService.createUser(any(UserCreateDto.class)))
@@ -70,8 +72,9 @@ public class AdminUserControllerTest {
                 .andExpect(status().isConflict());
     }
 
+    @DisplayName("Некорректная почта")
     @Test
-    void shouldReturnBadRequest_whenInvalidEmailFormat() throws Exception {
+    void createUser_invalidEmailUser_shouldReturnBadRequest() throws Exception {
         UserCreateDto dto = new UserCreateDto("User Name", "user-mail.ru");
 
         mockMvc.perform(post("/admin/users")
@@ -80,24 +83,27 @@ public class AdminUserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("Успешное удаление пользователя")
     @Test
-    void shouldReturnNoContent_whenUserDeleted() throws Exception {
+    void deleteUser_correctId_shouldReturnNoContent() throws Exception {
        doNothing().when(userService).deleteUser(1L);
 
         mockMvc.perform(delete("/admin/users/1"))
                 .andExpect(status().isNoContent());
     }
 
+    @DisplayName("Попытка удалить несуществующего пользователя")
     @Test
-    void shouldReturnNotFound_whenUserDoesNotExistToDelete() throws Exception {
+    void deleteUser_doesNotExistId_shouldReturnNotFound() throws Exception {
         doThrow(new NotFoundException("Пользователя не существует")).when(userService).deleteUser(1L);
 
         mockMvc.perform(delete("/admin/users/1"))
                 .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Получение всех пользователей")
     @Test
-    void shouldReturnOk_whenGetAllUsers() throws Exception {
+    void getAllUsers_nullIdList_shouldReturnOk() throws Exception {
         List<User> users = List.of(
                 new User(1L, "John",  "user1@example.com"),
                 new User(2L, "Jane",  "user2@example.com")
@@ -110,8 +116,9 @@ public class AdminUserControllerTest {
                 .andExpect(jsonPath("$.size()").value(2));
     }
 
+    @DisplayName("Получение пользователей по Id")
     @Test
-    void shouldReturnOkWithFilter_whenGetUsersByIds() throws Exception {
+    void getAllUsers_allParams_shouldReturnOkWithFilter() throws Exception {
         List<Long> ids = Arrays.asList(1L, 2L);
         List<User> users = List.of(
                 new User(1L, "John",  "user1@example.com")
@@ -124,14 +131,16 @@ public class AdminUserControllerTest {
                 .andExpect(jsonPath("$.size()").value(1));
     }
 
+    @DisplayName("Получение пользователей. Некорректное значение from")
     @Test
-    void shouldReturnBadRequest_whenFromIsNegative() throws Exception {
+    void getAllUsers_fromIsNegative_shouldReturnBadRequest() throws Exception {
         mockMvc.perform(get("/admin/users").param("from", "-1"))
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("Получение пользователей. Некорректное значение size")
     @Test
-    void shouldReturnBadRequest_whenSizeIsZeroOrNegative() throws Exception {
+    void getAllUsers_sizeIsZeroOrNegative_shouldReturnBadRequest() throws Exception {
        mockMvc.perform(get("/admin/users").param("size", "0"))
                 .andExpect(status().isBadRequest());
 
