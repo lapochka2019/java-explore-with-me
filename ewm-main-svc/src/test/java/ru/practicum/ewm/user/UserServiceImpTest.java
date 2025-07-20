@@ -12,8 +12,6 @@ import ru.practicum.ewm.user.dto.UserCreateDto;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.service.UserService;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = MainApp.class)
