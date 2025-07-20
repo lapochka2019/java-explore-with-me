@@ -1,21 +1,20 @@
 package ru.practicum.ewm.compilation.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.ewm.event.dto.EventShortDto;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CompilationDto {
-    Long id;
-    Set<Long> events;
-    Boolean pinned;
-    @NotBlank
-    @Size(max = 50, message = "Длина заголовка не должна превышать 50 символов")
-    String title;
+    private Long id;
+    private List<EventShortDto> events;
+    private Boolean pinned;
+    private String title;
 }

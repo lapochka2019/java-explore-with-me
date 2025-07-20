@@ -2,7 +2,7 @@ package ru.practicum.ewm.compilation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.practicum.ewm.event.Event;
+import ru.practicum.ewm.event.model.Event;
 
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private boolean pinned;
+    private Boolean pinned;
     @Column(nullable = false, length = 50)
     private String title;
     @ManyToMany
