@@ -7,14 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.utils.RequestStatus;
 
-import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventRequestStatusUpdateRequest {
+public class RequestStatusUpdateRequest {
     @NotEmpty(message = "Ваш список запросов пуст")
-    private Collection<Long> requestIds;
+    List<Long> requestIds;
 
     @NotBlank(message = "Статус запросов не указан")
     private RequestStatus status;

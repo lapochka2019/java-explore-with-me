@@ -43,4 +43,15 @@ public class ErrorHandler {
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         );
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleConflict(final ForbiddenException ex) {
+        return new ErrorResponse(
+                "FORBIDDEN",
+                "У пользователя нет необходимых прав доступа к ресурсу",
+                ex.getMessage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
 }
