@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LocationDto {
     @NotNull(message = "Поле latitude не может быть пустым")
-    private float latitude;
+    private float lat;
     @NotNull(message = "Поле longitude не может быть пустым")
-    private float longitude;
+    private float lon;
 }

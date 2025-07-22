@@ -1,5 +1,4 @@
 package ru.practicum.ewm.compilation.dto;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,12 +10,10 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompilationCreateDto {
-    Long id;
+public class CompilationUpdateDto {
     Set<Long> events;
     Boolean pinned;
 
-    @NotBlank
     @Size(max = 50, message = "Длина заголовка не должна превышать 50 символов")
     @Size(min = 1, message = "Заголовок должен содержать хотя бы 1 символ")
     String title;

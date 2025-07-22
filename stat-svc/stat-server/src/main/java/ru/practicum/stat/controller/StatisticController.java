@@ -3,6 +3,7 @@ package ru.practicum.stat.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.stat.HitDto;
 import ru.practicum.stat.ViewStatsDto;
@@ -18,6 +19,7 @@ import java.util.List;
 public class StatisticController {
     private final StatisticService statisticsService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hit")
     public HitDto create(@RequestBody HitDto hit) {
         log.info("Запрос на создание нового Hit: {}", hit);

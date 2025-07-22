@@ -39,4 +39,6 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) DESC")
     List<Statistic> findStatsAllUris(LocalDateTime start, LocalDateTime end);
+
+
 }

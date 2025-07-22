@@ -31,8 +31,8 @@ public class StatisticServiceImp implements StatisticService {
     @Override
     public HitDto createHit(HitDto createDto) {
         Hit hit = hitMapper.hitDtoToHit(createDto);
-        log.info("Создан Hit с данными: {}", hit);
         Hit createdHit = statisticRepository.save(hit);
+        log.info("Создан Hit с данными: {}", createdHit);
         return hitMapper.hitToHitDto(createdHit);
     }
 

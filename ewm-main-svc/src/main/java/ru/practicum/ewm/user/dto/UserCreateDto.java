@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class UserCreateDto {
 
     @NotBlank(message = "Поле name не может быть пустым")
-    @Size(min = 2, message = "Длина name не должна превышать 250 символов!")
-    @Size(max = 250, message = "Длина name должна быть более 2 символов!")
+    @Size(min = 2, message = "Длина name должна быть более 2 символов!")
+    @Size(max = 250, message = "Длина name не должна превышать 250 символов!")
     private String name;
 
     @NotBlank(message = "Поле email не может быть пустым")
-    @Size(min = 6, message = "Длина email не должна превышать 250 символов!")
-    @Size(max = 254, message = "Длина email должна быть более 6 !")
+    @Size(min = 6, message = "Длина email должна быть более 6 !")
+    @Size(max = 254, message = "Длина email не должна превышать 254 символов!")
     @Email(message = "Email должен быть в подходящем формате!")
     private String email;
 }

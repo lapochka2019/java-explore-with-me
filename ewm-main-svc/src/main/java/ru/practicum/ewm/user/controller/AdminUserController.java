@@ -36,14 +36,15 @@ public class AdminUserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(@RequestParam(required = false) List<Long> idList,
+    public List<User> getAllUsers(@RequestParam(required = false) List<Long> ids,
                                   @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                   @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Запрос на получение списка пользователей с параметрами: " +
                         "\n список ID: {}" +
                         "\n from: {}" +
                         "\n size: {}",
-                idList, from, size);
-        return userService.getAllUsers(idList, from, size);
+                ids, from, size);
+        return userService.getAllUsers(ids, from, size);
     }
+
 }

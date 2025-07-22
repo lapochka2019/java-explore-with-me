@@ -22,8 +22,8 @@ public class LocationMapperTest {
     void toLocation_allLocationDtoFieldsFilled_returnCorrectLocation() {
         LocationDto locationDto = new LocationDto(55.7558f, 37.6173f);
         Location location = locationMapper.toLocation(locationDto);
-        assertEquals(location.getLatitude(), locationDto.getLatitude());
-        assertEquals(location.getLongitude(), locationDto.getLongitude());
+        assertEquals(location.getLatitude(), locationDto.getLat());
+        assertEquals(location.getLongitude(), locationDto.getLon());
     }
 
     @DisplayName("Преобразовать null в Location")
@@ -38,8 +38,8 @@ public class LocationMapperTest {
     void toLocationDto_allLocationFieldsFilled_returnCorrectLocationDto() {
         Location location = new Location(1L, 55.7558f, 37.6173f);
         LocationDto locationDto = locationMapper.toLocationDto(location);
-        assertEquals(location.getLatitude(), locationDto.getLatitude());
-        assertEquals(location.getLongitude(), locationDto.getLongitude());
+        assertEquals(location.getLatitude(), locationDto.getLat());
+        assertEquals(location.getLongitude(), locationDto.getLon());
     }
 
     @DisplayName("Преобразовать null в LocationDto")

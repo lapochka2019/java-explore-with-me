@@ -38,9 +38,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException("Пользователя с id " + id + " не существует");
-        }
         userRepository.deleteById(id);
         log.info("Пользователь с id: {} успешно удален", id);
     }
