@@ -45,7 +45,7 @@ public class StatisticControllerTest {
         mockMvc.perform(post("/hit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.app").value("app"))
                 .andExpect(jsonPath("$.uri").value("/uri"));
