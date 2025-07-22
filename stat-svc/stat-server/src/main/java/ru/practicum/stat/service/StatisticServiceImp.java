@@ -9,7 +9,7 @@ import ru.practicum.stat.ViewStatsDto;
 import ru.practicum.stat.mapper.HitMapper;
 import ru.practicum.stat.mapper.ViewStatsMapper;
 import ru.practicum.stat.model.Hit;
-import ru.practicum.stat.model.ViewStats;
+import ru.practicum.stat.model.Statistic;
 import ru.practicum.stat.repository.StatisticRepository;
 
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class StatisticServiceImp implements StatisticService {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Дата начала диапазона должна быть ДО даты конца диапазона");
         }
-        List<ViewStats> viewStats;
+        List<Statistic> viewStats;
 
         if (unique) {
             if (uris != null && !uris.isEmpty()) {

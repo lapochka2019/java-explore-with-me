@@ -2,12 +2,12 @@ package ru.practicum.stat.mapper;
 
 import org.mapstruct.Mapper;
 import ru.practicum.stat.ViewStatsDto;
-import ru.practicum.stat.model.ViewStats;
+import ru.practicum.stat.model.Statistic;
 
 @Mapper(componentModel = "spring")
 public interface ViewStatsMapper {
 
-    ViewStatsDto toStatisticDto(ViewStats viewStats);
+    ViewStatsDto toStatisticDto(Statistic statistic);
 
-    ViewStats toStatistic(ViewStatsDto viewStatsDto);
+    Statistic toStatistic(ViewStatsDto viewStatsDto);
 }

@@ -15,21 +15,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(classes = StatisticApp.class)
+@SpringBootTest(classes = StatisticsServer.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @DisplayName("Тестирование StatisticServiceImpl")
-public class ViewStatsServiceImplTest {
+public class StatisticServiceImplTest {
 
     @Autowired
     StatisticService statisticService;
 
     @BeforeEach
     void setUp() {
-        HitDto hitCreateDto1 = new HitDto(0L,"app1", "some uri1", "123.123.0.0", LocalDateTime.now().minusDays(1));
-        HitDto hitCreateDto2 = new HitDto(0L,"app", "some uri2", "123.124.0.0", LocalDateTime.now().minusHours(2));
-        HitDto hitCreateDto3 = new HitDto(0L,"app", "some uri3", "123.125.0.0", LocalDateTime.now());
-        HitDto hitCreateDto4 = new HitDto(0L,"app", "some uri3", "123.126.0.0", LocalDateTime.now());
-        HitDto hitCreateDto5 = new HitDto(0L,"app", "some uri3", "123.125.0.0", LocalDateTime.now());
+        HitDto hitCreateDto1 = new HitDto(null,"app1", "some uri1", "123.123.0.0", LocalDateTime.now().minusDays(1));
+        HitDto hitCreateDto2 = new HitDto(null,"app", "some uri2", "123.124.0.0", LocalDateTime.now().minusHours(2));
+        HitDto hitCreateDto3 = new HitDto(null,"app", "some uri3", "123.125.0.0", LocalDateTime.now());
+        HitDto hitCreateDto4 = new HitDto(null,"app", "some uri3", "123.126.0.0", LocalDateTime.now());
+        HitDto hitCreateDto5 = new HitDto(null,"app", "some uri3", "123.125.0.0", LocalDateTime.now());
         statisticService.createHit(hitCreateDto1);
         statisticService.createHit(hitCreateDto2);
         statisticService.createHit(hitCreateDto3);
@@ -41,7 +41,7 @@ public class ViewStatsServiceImplTest {
     @Test
     @DisplayName("Создать Hit")
     void createHit_withCorrectHit_returnCorrectHitDto() {
-        HitDto hitCreateDto = new HitDto(1L, "app", "some uri", "123.123.0.0", LocalDateTime.now());
+        HitDto hitCreateDto = new HitDto(null, "app", "some uri", "123.123.0.0", LocalDateTime.now());
         HitDto hitDto = statisticService.createHit(hitCreateDto);
 
         assertEquals(hitDto.getId(), 6L);

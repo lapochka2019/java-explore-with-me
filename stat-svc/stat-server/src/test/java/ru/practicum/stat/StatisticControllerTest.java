@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(StatisticController.class)
 @DisplayName("Тестирование StatisticController")
-public class ViewStatsControllerTest {
+public class StatisticControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
