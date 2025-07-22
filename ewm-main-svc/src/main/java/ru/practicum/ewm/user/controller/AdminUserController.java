@@ -23,14 +23,14 @@ public class AdminUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public User createUser(@RequestBody @Valid UserCreateDto userCreateDto){
+    public User createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         log.info("Запрос на создание пользователя с данными: {}", userCreateDto);
         return userService.createUser(userCreateDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId){
+    public void deleteUser(@PathVariable Long userId) {
         log.info("Запрос на удаление пользователя с id: {}", userId);
         userService.deleteUser(userId);
     }
@@ -40,9 +40,9 @@ public class AdminUserController {
                                   @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                   @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Запрос на получение списка пользователей с параметрами: " +
-                "\n список ID: {}" +
-                "\n from: {}" +
-                "\n size: {}",
+                        "\n список ID: {}" +
+                        "\n from: {}" +
+                        "\n size: {}",
                 idList, from, size);
         return userService.getAllUsers(idList, from, size);
     }

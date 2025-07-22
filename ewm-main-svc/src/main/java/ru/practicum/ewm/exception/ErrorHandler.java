@@ -46,10 +46,32 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleConflict(final ForbiddenException ex) {
+    public ErrorResponse handleForbiddenErrors(final ForbiddenException ex) {
         return new ErrorResponse(
                 "FORBIDDEN",
                 "У пользователя нет необходимых прав доступа к ресурсу",
+                ex.getMessage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIncorrectRequestErrors(final IncorrectRequestException ex) {
+        return new ErrorResponse(
+                "BAD_REQUEST",
+                "Некорректный запрос",
+                ex.getMessage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerValidationException(ValidationException ex) {
+        return new ErrorResponse(
+                "BAD_REQUEST",
+                "Некорректные данные",
                 ex.getMessage(),
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         );

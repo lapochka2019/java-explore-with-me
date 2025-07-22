@@ -63,14 +63,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- MapStruct annotation processor -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.5.5.Final</version>
-        </dependency>
-
-        <!-- Для использования аннотаций в коде -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>

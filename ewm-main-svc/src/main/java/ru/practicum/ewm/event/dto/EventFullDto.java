@@ -33,5 +33,5 @@ public class EventFullDto {
     private UserShortDto initiator;
     private CategoryDto category;
     private long views;
-    private int confirmedRequests;
+    private long confirmedRequests;
 }

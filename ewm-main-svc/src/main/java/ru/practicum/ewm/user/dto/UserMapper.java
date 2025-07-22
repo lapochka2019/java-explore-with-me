@@ -6,7 +6,7 @@ import ru.practicum.ewm.user.model.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User toUser (UserCreateDto userCreateDto);
+    User toUser(UserCreateDto userCreateDto);
 
-    UserShortDto toShortDto (User user);
+    UserShortDto toShortDto(User user);
 }
