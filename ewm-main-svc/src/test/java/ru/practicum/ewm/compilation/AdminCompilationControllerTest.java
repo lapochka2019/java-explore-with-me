@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.ewm.compilation.controller.AdminCompilationController;
 import ru.practicum.ewm.compilation.dto.CompilationCreateDto;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
+import ru.practicum.ewm.compilation.dto.CompilationUpdateDto;
 import ru.practicum.ewm.compilation.service.CompilationService;
 import ru.practicum.ewm.exception.NotFoundException;
 
@@ -75,7 +76,7 @@ public class AdminCompilationControllerTest {
     @DisplayName("Успешное обновление подборки")
     @Test
     void updateCompilation_validData_shouldReturnUpdated() throws Exception {
-        CompilationCreateDto updateDto = new CompilationCreateDto();
+        CompilationUpdateDto updateDto = new CompilationUpdateDto();
         updateDto.setTitle("Обновлённое название");
         updateDto.setPinned(true);
         updateDto.setEvents(Collections.singleton(3L));
@@ -99,7 +100,7 @@ public class AdminCompilationControllerTest {
     @DisplayName("Обновление несуществующей подборки должно вернуть 404")
     @Test
     void updateCompilation_nonExistentId_shouldReturnNotFound() throws Exception {
-        CompilationCreateDto updateDto = new CompilationCreateDto();
+        CompilationUpdateDto updateDto = new CompilationUpdateDto();
         updateDto.setTitle("Новое название");
 
         when(compilationService.update(999L, updateDto))

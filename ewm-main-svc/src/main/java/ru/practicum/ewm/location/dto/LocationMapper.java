@@ -9,6 +9,7 @@ public interface LocationMapper {
 
     @Mapping(target = "longitude", source = "locationDto.lon")
     @Mapping(target = "latitude", source = "locationDto.lat")
+    @Mapping(target = "id", ignore = true)
     Location toLocation(LocationDto locationDto);
 
     @Mapping(target = "lon", source = "location.longitude")

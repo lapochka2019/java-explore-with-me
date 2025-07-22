@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.ewm.MainApp;
 import ru.practicum.ewm.compilation.dto.CompilationCreateDto;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
+import ru.practicum.ewm.compilation.dto.CompilationUpdateDto;
 import ru.practicum.ewm.compilation.repository.CompilationRepository;
 import ru.practicum.ewm.compilation.service.CompilationService;
 import ru.practicum.ewm.event.model.Event;
@@ -91,7 +92,7 @@ public class CompilationServiceImpTest {
         initialDto.setEvents(new HashSet<>(Arrays.asList(1L)));
         CompilationDto savedDto = compilationService.create(initialDto);
 
-        CompilationCreateDto updateDto = new CompilationCreateDto();
+        CompilationUpdateDto updateDto = new CompilationUpdateDto();
         updateDto.setTitle("Новое название");
         updateDto.setPinned(true);
         updateDto.setEvents(new HashSet<>(Collections.singletonList(2L)));
@@ -116,7 +117,7 @@ public class CompilationServiceImpTest {
         initialDto.setEvents(new HashSet<>(Arrays.asList(1L, 2L)));
         CompilationDto savedDto = compilationService.create(initialDto);
 
-        CompilationCreateDto updateDto = new CompilationCreateDto();
+        CompilationUpdateDto updateDto = new CompilationUpdateDto();
         updateDto.setTitle("Новое название");
 
         CompilationDto updatedDto = compilationService.update(savedDto.getId(), updateDto);
@@ -127,7 +128,7 @@ public class CompilationServiceImpTest {
     @DisplayName("Обновление несуществующей подборки")
     @Test
     void updateCompilation_nonExisting_throwsNotFoundException() {
-        CompilationCreateDto dto = new CompilationCreateDto();
+        CompilationUpdateDto dto = new CompilationUpdateDto();
         dto.setTitle("Несуществующая");
 
         assertThrows(NotFoundException.class, () -> compilationService.update(999L, dto));

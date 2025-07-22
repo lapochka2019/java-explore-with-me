@@ -126,7 +126,7 @@ public class AdminUserControllerTest {
 
         when(userService.getAllUsers(anyList(), anyInt(), anyInt())).thenReturn(users);
 
-        mockMvc.perform(get("/admin/users").param("idList", "1,2"))
+        mockMvc.perform(get("/admin/users").param("ids", "1,2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1));
     }
