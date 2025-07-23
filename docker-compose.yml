@@ -1,7 +1,7 @@
 services:
   stats-server:
     build:
-      context: ./stat-svc/stat-server
+      context: ./stat-svc/stats-server
     image: stats-server
     container_name: stats-server
     ports:

@@ -39,11 +39,12 @@ public class StatisticServiceImp implements StatisticService {
     @Transactional(readOnly = true)
     @Override
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        log.info("Получение статистики с start={}, end={}, uris={}, unique={}", start, end, uris, unique);
+        log.info("ПОЛУЧЕНИЕ СТАТИСТИКИ: с start={}, end={}, uris={}, unique={}", start, end, uris, unique);
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Дата начала диапазона должна быть ДО даты конца диапазона");
         }
         List<Statistic> viewStats;
+        log.info("ВСЯ БД: {}", statisticRepository.findAll());
 
         if (unique) {
             if (uris != null && !uris.isEmpty()) {
