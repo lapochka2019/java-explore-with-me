@@ -29,15 +29,15 @@ public class PublicEventController {
                                                      HttpServletRequest request) {
         log.info("Запрос на получения событий с фильтром");
         Collection<EventShortDto> events = eventService.findAllByPublic(searchEventParams, request);
-        log.info("Отправлен ответ GET /events с телом: {}", events);
+        log.info("Отправлен ответ: {}", events);
         return events;
     }
 
     @GetMapping("/{eventId}")
     public EventFullDto findEventById(@PathVariable Long eventId, HttpServletRequest request) {
-        log.info("Запрос события ", eventId);
+        log.info("Запрос события {}", eventId);
         EventFullDto event = eventService.findEventById(eventId, request);
-        log.info("Отправлен ответ телом: {}", eventId, event);
+        log.info("Отправлен ответ: {}", event);
         return event;
     }
 }
