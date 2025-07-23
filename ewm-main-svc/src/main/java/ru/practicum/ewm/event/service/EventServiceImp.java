@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.categories.CategoryRepository;
+import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.categories.dto.CategoryMapper;
 import ru.practicum.ewm.categories.model.Category;
 import ru.practicum.ewm.event.dto.*;
@@ -57,7 +57,7 @@ public class EventServiceImp implements EventService {
     private final CategoryMapper categoryMapper;
     private final UserMapper userMapper;
     private final ObjectMapper mapper;
-    StatisticsClient statisticsClient;
+    private final StatisticsClient statisticsClient;
 
     @Override
     public EventFullDto create(Long userId, EventCreateDto newEventDto) {

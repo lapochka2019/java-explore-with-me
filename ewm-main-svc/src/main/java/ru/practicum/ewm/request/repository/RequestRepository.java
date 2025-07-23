@@ -3,12 +3,14 @@ package ru.practicum.ewm.request.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.request.model.Request;
 import ru.practicum.ewm.utils.RequestStatus;
 
 import java.util.List;
 
+@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     boolean existsByRequesterIdAndEventId(Long userId, Long eventId);

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.ewm.MainApp;
-import ru.practicum.ewm.categories.CategoryRepository;
+import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.categories.model.Category;
 import ru.practicum.ewm.event.dto.EventCreateDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
