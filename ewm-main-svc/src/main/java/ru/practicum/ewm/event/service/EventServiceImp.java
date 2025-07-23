@@ -57,7 +57,7 @@ public class EventServiceImp implements EventService {
     private final CategoryMapper categoryMapper;
     private final UserMapper userMapper;
     private final ObjectMapper mapper;
-    private final StatisticsClient statisticsClient;
+    StatisticsClient statisticsClient;
 
     @Override
     public EventFullDto create(Long userId, EventCreateDto newEventDto) {
