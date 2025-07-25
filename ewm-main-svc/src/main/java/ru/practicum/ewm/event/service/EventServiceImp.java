@@ -12,9 +12,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.categories.dto.CategoryMapper;
 import ru.practicum.ewm.categories.model.Category;
+import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.event.dto.*;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.repository.EventRepository;
@@ -216,17 +216,18 @@ public class EventServiceImp implements EventService {
         List<Event> events = eventRepository.findAllByInitiatorId(user.getId(), pageable);
 
         List<Long> eventIds = events.stream().map(Event::getId).collect(Collectors.toList());
+
         Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsForEvents(eventIds);
+
+        Map<Long, Long> viewsMap = getViewsForEvents(events, request);
 
         return events.stream()
                 .map(event -> {
                     EventShortDto eventShortDto = eventMapper.toShortDto(event);
                     eventShortDto.setCategory(categoryMapper.toCategoryDto(event.getCategory()));
                     eventShortDto.setInitiator(userMapper.toShortDto(event.getInitiator()));
-                    eventShortDto.setViews(getViews(event.getId(), event.getCreatedOn(), request));
-
+                    eventShortDto.setViews(viewsMap.getOrDefault(event.getId(), 0L));
                     eventShortDto.setConfirmedRequests(confirmedRequestsMap.getOrDefault(event.getId(), 0L));
-
                     return eventShortDto;
                 })
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -234,24 +235,33 @@ public class EventServiceImp implements EventService {
 
     @Override
     public Collection<EventFullDto> findAllByAdmin(EventSearchDto params, HttpServletRequest request) {
-
         Pageable pageable = PageRequest.of(params.getFrom(), params.getSize());
 
         List<Event> eventList;
         try {
-            eventList = eventRepository.findAllByAdmin(params.getUsers(), params.getStates(), params.getCategories(), params.getRangeStart(), params.getRangeEnd(), pageable);
+            eventList = eventRepository.findAllByAdmin(
+                    params.getUsers(),
+                    params.getStates(),
+                    params.getCategories(),
+                    params.getRangeStart(),
+                    params.getRangeEnd(),
+                    pageable
+            );
         } catch (Exception e) {
             log.error("Ошибка при выполнении запроса к БД: ", e);
             throw new RuntimeException("Ошибка при получении данных из базы данных", e);
         }
 
         List<Long> eventIds = eventList.stream().map(Event::getId).collect(Collectors.toList());
+
         Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsForEvents(eventIds);
+
+        Map<Long, Long> viewsMap = getViewsForEvents(eventList, request);
 
         return eventList.stream()
                 .map(event -> {
                     EventFullDto dto = eventMapper.toFullDto(event);
-                    dto.setViews(getViews(event.getId(), event.getCreatedOn(), request));
+                    dto.setViews(viewsMap.getOrDefault(event.getId(), 0L));
                     dto.setConfirmedRequests(confirmedRequestsMap.getOrDefault(event.getId(), 0L));
                     return dto;
                 })
@@ -415,6 +425,56 @@ public class EventServiceImp implements EventService {
         } catch (Exception e) {
             log.error("Ошибка при получении статистики для события {}: {}", eventId, e.getMessage());
             return defaultViews;
+        }
+    }
+
+    private Map<Long, Long> getViewsForEvents(List<Event> events, HttpServletRequest request) {
+        if (events.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        LocalDateTime end = LocalDateTime.now();
+        Boolean unique = true;
+
+        List<String> uris = events.stream()
+                .map(event -> request.getRequestURI() + "/" + event.getId())
+                .collect(Collectors.toList());
+
+        LocalDateTime start = events.stream()
+                .map(Event::getCreatedOn)
+                .min(LocalDateTime::compareTo)
+                .orElse(end);
+
+        try {
+            log.info("Запрос к statClient: URIs={}, from={}, to={}, unique={}", uris, start, end, unique);
+            ResponseEntity<Object> statsResponse = statisticsClient.getStats(start, end, uris, unique);
+            log.info("Ответ от statClient: status={}, body={}", statsResponse.getStatusCode(), statsResponse.getBody());
+
+            if (!statsResponse.getStatusCode().is2xxSuccessful() || !statsResponse.hasBody() || statsResponse.getBody() == null) {
+                log.warn("Неуспешный ответ или пустое тело от statClient");
+                return Collections.emptyMap();
+            }
+
+            Object body = statsResponse.getBody();
+            ViewStatsDto[] statsArray = convertToViewStatsDto(body, null);
+
+            if (statsArray == null || statsArray.length == 0) {
+                log.info("Нет данных статистики для событий");
+                return Collections.emptyMap();
+            }
+
+            Map<String, Long> uriToViews = Arrays.stream(statsArray)
+                    .collect(Collectors.toMap(ViewStatsDto::getUri, ViewStatsDto::getHits));
+
+            return events.stream()
+                    .collect(Collectors.toMap(
+                            Event::getId,
+                            event -> uriToViews.getOrDefault(request.getRequestURI() + "/" + event.getId(), 0L)
+                    ));
+
+        } catch (Exception e) {
+            log.error("Ошибка при получении статистики для событий: {}", e.getMessage());
+            return Collections.emptyMap();
         }
     }
 
