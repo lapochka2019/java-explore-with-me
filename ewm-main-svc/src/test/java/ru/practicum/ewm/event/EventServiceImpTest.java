@@ -75,7 +75,7 @@ public class EventServiceImpTest {
         event.setInitiator(user1);
         eventRepository.save(event);
 
-       ValidationException exception = assertThrows(
+        ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> eventService.getEventOfUser(user2.getId(), event.getId()),
                 "Ожидается исключение ValidationException"
@@ -113,7 +113,7 @@ public class EventServiceImpTest {
         UserCreateDto userCreateDto = new UserCreateDto("User name", "user@email.ru");
         User user = userService.createUser(userCreateDto);
 
-       Collection<EventShortDto> events = eventService.findAllByPrivate(user.getId(), 0, 10, null);
+        Collection<EventShortDto> events = eventService.findAllByPrivate(user.getId(), 0, 10, null);
 
         assertNotNull(events);
         assertEquals(0, events.size());
@@ -125,7 +125,7 @@ public class EventServiceImpTest {
         UserCreateDto userCreateDto = new UserCreateDto("User name", "user@email.ru");
         User user = userService.createUser(userCreateDto);
 
-       Event event1 = new Event();
+        Event event1 = new Event();
         event1.setTitle("Event 1");
         event1.setInitiator(user);
         event1.setState(EventState.PUBLISHED);
@@ -159,7 +159,7 @@ public class EventServiceImpTest {
         params.setFrom(0);
         params.setSize(10);
 
-       Collection<EventFullDto> events = eventService.findAllByAdmin(params, null);
+        Collection<EventFullDto> events = eventService.findAllByAdmin(params, null);
 
         assertNotNull(events);
         assertEquals(0, events.size());
@@ -178,7 +178,7 @@ public class EventServiceImpTest {
         eventRepository.save(event);
 
         HttpServletRequest mockRequest = new MockHttpServletRequest();
-       EventFullDto eventFullDto = eventService.findEventById(event.getId(), mockRequest);
+        EventFullDto eventFullDto = eventService.findEventById(event.getId(), mockRequest);
 
         assertNotNull(eventFullDto);
         assertEquals(event.getTitle(), eventFullDto.getTitle());

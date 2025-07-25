@@ -442,6 +442,7 @@ public class EventServiceImp implements EventService {
 
         LocalDateTime start = events.stream()
                 .map(Event::getCreatedOn)
+                .filter(Objects::nonNull)
                 .min(LocalDateTime::compareTo)
                 .orElse(end);
 
