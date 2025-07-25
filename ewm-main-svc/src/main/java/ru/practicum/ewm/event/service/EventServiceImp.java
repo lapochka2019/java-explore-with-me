@@ -392,31 +392,38 @@ public class EventServiceImp implements EventService {
             ResponseEntity<Object> statsResponse = statisticsClient.getStats(createdOn, end, List.of(uri), unique);
             log.info("Запрос к statClient: URI={}, from={}, to={}, unique={}", uri, createdOn, end, unique);
             log.info("Ответ от statClient: status={}, body={}", statsResponse.getStatusCode(), statsResponse.getBody());
-            if (statsResponse.getStatusCode().is2xxSuccessful() && statsResponse.hasBody()) {
-                Object body = statsResponse.getBody();
-                if (body != null) {
-                    try {
-                        ViewStatsDto[] statsArray = mapper.convertValue(body, ViewStatsDto[].class);
-                        List<ViewStatsDto> stats = Arrays.asList(statsArray);
 
-                        if (!stats.isEmpty()) {
-                            return stats.getLast().getHits();
-                        } else {
-                            log.info("Нет данных статистики для события {}", eventId);
-                        }
-                    } catch (Exception e) {
-                        log.error("Ошибка преобразования данных статистики для события {}: {}", eventId, e.getMessage());
-                        return defaultViews;
-                    }
-                } else {
-                    log.warn("Тело ответа от statClient пустое для события {}", eventId);
-                }
-            } else {
-                log.warn("Неуспешный ответ от statClient для события {}: {}", eventId, statsResponse.getStatusCode());
+            if (!statsResponse.getStatusCode().is2xxSuccessful() || !statsResponse.hasBody()) {
+                log.warn("Неуспешный ответ или пустое тело от statClient для события {}: {}", eventId, statsResponse.getStatusCode());
+                return defaultViews;
             }
+
+            Object body = statsResponse.getBody();
+            if (body == null) {
+                log.warn("Тело ответа от statClient пустое для события {}", eventId);
+                return defaultViews;
+            }
+
+            ViewStatsDto[] statsArray = convertToViewStatsDto(body, eventId);
+            if (statsArray == null || statsArray.length == 0) {
+                log.info("Нет данных статистики для события {}", eventId);
+                return defaultViews;
+            }
+
+            return Arrays.stream(statsArray).reduce((first, second) -> second).orElseThrow().getHits();
+
         } catch (Exception e) {
             log.error("Ошибка при получении статистики для события {}: {}", eventId, e.getMessage());
+            return defaultViews;
         }
-        return defaultViews;
+    }
+
+    private ViewStatsDto[] convertToViewStatsDto(Object body, Long eventId) {
+        try {
+            return mapper.convertValue(body, ViewStatsDto[].class);
+        } catch (Exception e) {
+            log.error("Ошибка преобразования данных статистики для события {}: {}", eventId, e.getMessage());
+            return null;
+        }
     }
 }

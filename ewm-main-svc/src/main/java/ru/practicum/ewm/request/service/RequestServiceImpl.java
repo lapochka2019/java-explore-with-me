@@ -112,53 +112,43 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public RequestStatusUpdateResult updateStatus(Long userId, Long eventId,
-                                                  RequestStatusUpdateRequest dto) {
+    public RequestStatusUpdateResult updateStatus(Long userId, Long eventId, RequestStatusUpdateRequest dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь c ID " + userId + " не найден"));
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Событие c ID " + eventId + " не найдено"));
 
         List<Request> requests = requestRepository.findAllById(dto.getRequestIds());
-        RequestStatusUpdateResult result = new RequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
-
         if (requests.isEmpty()) {
-            return result;
+            return new RequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
         }
 
         RequestStatus targetStatus = RequestStatus.valueOf(String.valueOf(dto.getStatus()));
 
-        int limit = event.getParticipantLimit();
-        long confirmed = requestRepository.countByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED);
+        int participantLimit = event.getParticipantLimit();
+        long confirmedCount = requestRepository.countByEventIdAndStatus(event.getId(), RequestStatus.CONFIRMED);
 
-        if (targetStatus == RequestStatus.CONFIRMED) {
-            if (limit != 0 && confirmed >= limit) {
-                throw new ConflictException("Достигнут лимит участников.");
+        if (targetStatus == RequestStatus.CONFIRMED && participantLimit != 0 && confirmedCount >= participantLimit) {
+            throw new ConflictException("Достигнут лимит участников.");
+        }
+
+        RequestStatusUpdateResult result = new RequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
+
+        for (Request request : requests) {
+            validateRequest(request, eventId);
+
+            if (request.getStatus() != RequestStatus.PENDING) {
+                throw new ConflictException("Изменять можно только заявки в статусе PENDING.");
             }
 
-            for (Request request : requests) {
-                if (!request.getEvent().getId().equals(eventId)) {
-                    throw new NotFoundException("Запрос не относится к данному событию.");
-                }
-                if (request.getStatus() != RequestStatus.PENDING) {
-                    throw new ConflictException("Изменять можно только заявки в статусе PENDING.");
+            if (targetStatus == RequestStatus.CONFIRMED) {
+                if (participantLimit != 0 && confirmedCount >= participantLimit) {
+                    break; // Достигнут лимит участников
                 }
                 request.setStatus(RequestStatus.CONFIRMED);
                 result.getConfirmedRequests().add(requestMapper.toRequestDto(request));
-                confirmed++;
-                if (confirmed == limit) {
-                    break;
-                }
-            }
-
-        } else if (targetStatus == RequestStatus.REJECTED) {
-            for (Request request : requests) {
-                if (!request.getEvent().getId().equals(eventId)) {
-                    throw new NotFoundException("Запрос не относится к данному событию.");
-                }
-                if (request.getStatus() != RequestStatus.PENDING) {
-                    throw new ConflictException("Изменять можно только заявки в статусе PENDING.");
-                }
+                confirmedCount++;
+            } else if (targetStatus == RequestStatus.REJECTED) {
                 request.setStatus(RequestStatus.REJECTED);
                 result.getRejectedRequests().add(requestMapper.toRequestDto(request));
             }
@@ -166,5 +156,11 @@ public class RequestServiceImpl implements RequestService {
 
         requestRepository.saveAll(requests);
         return result;
+    }
+
+    private void validateRequest(Request request, Long eventId) {
+        if (!request.getEvent().getId().equals(eventId)) {
+            throw new NotFoundException("Запрос не относится к данному событию.");
+        }
     }
 }
