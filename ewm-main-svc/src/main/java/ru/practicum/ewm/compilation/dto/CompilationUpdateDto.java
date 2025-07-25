@@ -11,10 +11,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompilationUpdateDto {
-    Set<Long> events;
-    Boolean pinned;
+    private Set<Long> events;
+    private Boolean pinned;
 
-    @Size(max = 50, message = "Длина заголовка не должна превышать 50 символов")
-    @Size(min = 1, message = "Заголовок должен содержать хотя бы 1 символ")
-    String title;
+    @Size(min = 1, max = 50, message = "Длина заголовка должна быть от 1 до 50 символов")
+    private String title;
 }

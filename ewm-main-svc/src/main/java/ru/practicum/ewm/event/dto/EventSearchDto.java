@@ -15,19 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventSearchDto {
-    String text;
-    List<Long> categories;
-    Boolean paid;
+    private String text;
+    private List<Long> categories;
+    private Boolean paid;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime rangeStart;
+    private LocalDateTime rangeStart;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime rangeEnd;
-    Boolean onlyAvailable;
-    String sort;
+    private LocalDateTime rangeEnd;
+    private Boolean onlyAvailable;
+    private String sort;
     @PositiveOrZero
-    int from = 0;
+    private int from = 0;
     @Positive
-    int size = 10;
-    List<Long> users;
-    List<EventState> states;
+    private int size = 10;
+    private List<Long> users;
+    private List<EventState> states;
 }

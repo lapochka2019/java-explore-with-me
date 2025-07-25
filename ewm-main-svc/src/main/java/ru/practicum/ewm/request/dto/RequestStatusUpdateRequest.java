@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RequestStatusUpdateRequest {
     @NotEmpty(message = "Ваш список запросов пуст")
-    List<Long> requestIds;
+    private List<Long> requestIds;
 
     @NotBlank(message = "Статус запросов не указан")
     private RequestStatus status;

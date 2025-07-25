@@ -17,7 +17,6 @@ public class CompilationCreateDto {
     Boolean pinned;
 
     @NotBlank
-    @Size(max = 50, message = "Длина заголовка не должна превышать 50 символов")
-    @Size(min = 1, message = "Заголовок должен содержать хотя бы 1 символ")
+    @Size(min = 1, max = 50, message = "Длина заголовка должна быть от 1 до 50 символов")
     String title;
 }

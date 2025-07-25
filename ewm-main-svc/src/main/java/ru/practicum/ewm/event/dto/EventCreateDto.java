@@ -16,14 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EventCreateDto {
     @NotBlank
-    @Size(max = 2000, message = "Длина аннотации не должна превышать 2000 символов")
-    @Size(min = 20, message = "Длина аннотации не должна быть не меньше 20")
+    @Size(min = 20, max = 2000, message = "Длина аннотации должна быть от 20 до 2000 символов")
     private String annotation;
     private Long category;
 
     @NotBlank
-    @Size(max = 7000, message = "Длина описания не должна превышать 7000 символов")
-    @Size(min = 20, message = "Длина описания не должна быть не меньше 20")
+    @Size(min = 20, max = 7000, message = "Длина описания должна быть от 20 до 7000 символов")
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -35,7 +33,6 @@ public class EventCreateDto {
     private Integer participantLimit = 0;
     private Boolean requestModeration = true;
 
-    @Size(max = 120, message = "Длина аннотации не должна превышать 120 символов")
-    @Size(min = 3, message = "Длина аннотации не должна быть не меньше 3")
+    @Size(min = 3, max = 120, message = "Длина аннотации должна быть от 3 до 120 символов")
     private String title;
 }
