@@ -1,5 +1,6 @@
 package ru.practicum.ewm.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -71,6 +72,17 @@ public class ErrorHandler {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(BAD_REQUEST)
     public ErrorResponse handlerValidationException(ValidationException ex) {
+        return new ErrorResponse(
+                "BAD_REQUEST",
+                "Некорректные данные",
+                ex.getMessage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ErrorResponse handlerValidationException(ConstraintViolationException ex) {
         return new ErrorResponse(
                 "BAD_REQUEST",
                 "Некорректные данные",

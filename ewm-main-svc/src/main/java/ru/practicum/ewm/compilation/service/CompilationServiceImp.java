@@ -5,15 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.compilation.dto.CompilationUpdateDto;
-import ru.practicum.ewm.compilation.repository.CompilationRepository;
 import ru.practicum.ewm.compilation.dto.CompilationCreateDto;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.CompilationMapper;
 import ru.practicum.ewm.compilation.model.Compilation;
+import ru.practicum.ewm.compilation.repository.CompilationRepository;
 import ru.practicum.ewm.event.dto.EventMapper;
-import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.dto.EventShortDto;
+import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.exception.NotFoundException;
 
@@ -49,7 +48,7 @@ public class CompilationServiceImp implements CompilationService {
     }
 
     @Override
-    public CompilationDto update(Long compId, CompilationUpdateDto updateCompilationRequest) {
+    public CompilationDto update(Long compId, CompilationCreateDto updateCompilationRequest) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException("Подборка c id " + compId + " не найдена"));
         log.info("Обновление подборки c {}, на {}", updateCompilationRequest.toString(), compilation.toString());

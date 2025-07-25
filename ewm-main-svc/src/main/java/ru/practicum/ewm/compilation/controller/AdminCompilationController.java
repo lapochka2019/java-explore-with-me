@@ -4,12 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.compilation.dto.CompilationCreateDto;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
-import ru.practicum.ewm.compilation.dto.CompilationUpdateDto;
 import ru.practicum.ewm.compilation.service.CompilationService;
+import ru.practicum.ewm.utils.Marker;
 
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("/admin/compilations")
@@ -20,6 +22,7 @@ public class AdminCompilationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @Validated(Marker.OnCreate.class)
     public CompilationDto create(@Valid @RequestBody CompilationCreateDto newCompilationCreateDto) {
         log.info("Запрос на добавление подборки событий - ADMIN: {}", newCompilationCreateDto);
         CompilationDto compilation = compilationService.create(newCompilationCreateDto);
@@ -28,7 +31,8 @@ public class AdminCompilationController {
     }
 
     @PatchMapping("/{compId}")
-    public CompilationDto update(@Valid @RequestBody CompilationUpdateDto updateCompilation,
+    @Validated(Marker.OnUpdate.class)
+    public CompilationDto update(@Valid @RequestBody CompilationCreateDto updateCompilation,
                                  @PathVariable Long compId) {
         log.info("Запрос на обновление подборки событий с id {} - ADMIN: {}", compId, updateCompilation);
         CompilationDto compilation = compilationService.update(compId, updateCompilation);
