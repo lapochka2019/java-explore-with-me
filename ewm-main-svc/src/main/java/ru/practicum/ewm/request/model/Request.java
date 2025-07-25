@@ -21,9 +21,11 @@ public class Request {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
+    @ToString.Exclude
     private Event event;
     @ManyToOne
     @JoinColumn(name = "requester_id", nullable = false)
+    @ToString.Exclude
     private User requester;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;

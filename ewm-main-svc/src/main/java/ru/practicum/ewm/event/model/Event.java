@@ -23,14 +23,17 @@ public class Event {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
+    @ToString.Exclude
     private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "initiator_id")
+    @ToString.Exclude
     private User initiator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category category;
 
     @Column(length = 120)

@@ -11,8 +11,6 @@ import ru.practicum.ewm.utils.StateAction;
 import java.time.LocalDateTime;
 
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateEventUserRequest {
