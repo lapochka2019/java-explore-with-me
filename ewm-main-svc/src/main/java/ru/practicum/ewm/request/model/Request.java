@@ -21,10 +21,10 @@ public class Request {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
-    Event event;
+    private Event event;
     @ManyToOne
     @JoinColumn(name = "requester_id", nullable = false)
-    User requester;
+    private User requester;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
     @Column(nullable = false)
