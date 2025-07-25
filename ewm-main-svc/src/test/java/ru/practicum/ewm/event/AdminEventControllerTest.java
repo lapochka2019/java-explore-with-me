@@ -97,7 +97,6 @@ public class AdminEventControllerTest {
     @DisplayName("Успешное обновление события")
     @Test
     void updateEvent_correctRequest_shouldReturnUpdatedEvent() throws Exception {
-        // Arrange
         Long eventId = 1L;
         UpdateEventAdminRequest updateRequest = new UpdateEventAdminRequest();
         updateRequest.setTitle("Updated Title");
@@ -132,23 +131,23 @@ public class AdminEventControllerTest {
     }
 
     private EventFullDto createEventFullDto(Long id, String title, String description) {
-        EventFullDto dto = new EventFullDto();
-        dto.setId(id);
-        dto.setTitle(title);
-        dto.setDescription(description);
-        dto.setAnnotation("Annotation for " + title + " some text to 20 literals");
-        dto.setEventDate(LocalDateTime.now());
-        dto.setLocation(new LocationDto(55.7522f, 37.6156f));
-        dto.setPaid(true);
-        dto.setParticipantLimit(100);
-        dto.setRequestModeration(true);
-        dto.setState(EventState.PUBLISHED);
-        dto.setCreatedOn(LocalDateTime.now().minusDays(1));
-        dto.setPublishedOn(LocalDateTime.now());
-        dto.setInitiator(new UserShortDto(1L, "User Name"));
-        dto.setCategory(new CategoryDto("Category Name"));
-        dto.setViews(1000L);
-        dto.setConfirmedRequests(500L);
-        return dto;
+        return EventFullDto.builder()
+                .id(id)
+                .title(title)
+                .description(description)
+                .annotation("Annotation for " + title + " some text to 20 literals")
+                .eventDate(LocalDateTime.now())
+                .location(new LocationDto(55.7522f, 37.6156f))
+                .paid(true)
+                .participantLimit(100)
+                .requestModeration(true)
+                .state(EventState.PUBLISHED)
+                .createdOn(LocalDateTime.now().minusDays(1))
+                .publishedOn(LocalDateTime.now())
+                .initiator(new UserShortDto(1L, "User Name"))
+                .category(new CategoryDto("Category Name"))
+                .views(1000L)
+                .confirmedRequests(500L)
+                .build();
     }
 }
