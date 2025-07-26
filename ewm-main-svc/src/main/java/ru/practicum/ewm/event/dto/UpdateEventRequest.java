@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateEventAdminRequest {
+public class UpdateEventRequest {
     @Size(min = 20, max = 2000, message = "Длина аннотации должна быть от 20 до 2000 символов")
     private String annotation;
     private Long category;

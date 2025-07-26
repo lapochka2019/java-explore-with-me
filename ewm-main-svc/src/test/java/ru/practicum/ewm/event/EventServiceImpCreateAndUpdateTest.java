@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.ewm.MainApp;
-import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.categories.model.Category;
+import ru.practicum.ewm.categories.repository.CategoryRepository;
 import ru.practicum.ewm.event.dto.EventCreateDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
-import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
-import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
+import ru.practicum.ewm.event.dto.UpdateEventRequest;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.event.service.EventService;
@@ -138,7 +137,7 @@ public class EventServiceImpCreateAndUpdateTest {
     @Test
     void updateEventByAdmin_NonExistentEvent_ThrowsNotFoundException() {
         Long nonExistentEventId = 999L;
-        UpdateEventAdminRequest adminRequest = new UpdateEventAdminRequest();
+        UpdateEventRequest adminRequest = new UpdateEventRequest();
 
         NotFoundException exception = assertThrows(
                 NotFoundException.class,
@@ -151,7 +150,7 @@ public class EventServiceImpCreateAndUpdateTest {
     @Test
     void updateEventByAdmin_NonExistentCategory_ThrowsNotFoundException() {
         Event event = createTestEvent();
-        UpdateEventAdminRequest adminRequest = new UpdateEventAdminRequest();
+        UpdateEventRequest adminRequest = new UpdateEventRequest();
         adminRequest.setCategory(999L); // Категория не существует
 
         NotFoundException exception = assertThrows(
@@ -167,7 +166,7 @@ public class EventServiceImpCreateAndUpdateTest {
     @Test
     void updateEventByAdmin_ValidRequest_ReturnsUpdatedEvent() {
         Event event = createTestEvent();
-        UpdateEventAdminRequest adminRequest = new UpdateEventAdminRequest();
+        UpdateEventRequest adminRequest = new UpdateEventRequest();
         adminRequest.setTitle("Updated Title");
         adminRequest.setStateAction(StateAction.PUBLISH_EVENT);
 
@@ -183,7 +182,7 @@ public class EventServiceImpCreateAndUpdateTest {
     void updateEventByPrivate_NonExistentUser_ThrowsNotFoundException() {
         Long nonExistentUserId = 999L;
         Event event = createTestEvent();
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
 
         NotFoundException exception = assertThrows(
                 NotFoundException.class,
@@ -196,7 +195,7 @@ public class EventServiceImpCreateAndUpdateTest {
     @Test
     void updateEventByPrivate_NonExistentEvent_ThrowsNotFoundException() {
         Long nonExistentEventId = 999L;
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
 
         NotFoundException exception = assertThrows(
                 NotFoundException.class,
@@ -214,7 +213,7 @@ public class EventServiceImpCreateAndUpdateTest {
         userRepository.save(anotherUser);
 
         Event event = createTestEvent();
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
 
         NotFoundException exception = assertThrows(
                 NotFoundException.class,
@@ -230,7 +229,7 @@ public class EventServiceImpCreateAndUpdateTest {
         event.setState(EventState.PUBLISHED);
         eventRepository.save(event);
 
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
 
         ConflictException exception = assertThrows(
                 ConflictException.class,
@@ -245,7 +244,7 @@ public class EventServiceImpCreateAndUpdateTest {
     void updateEventByPrivate_NonExistentCategory_ThrowsNotFoundException() {
         Event event = createTestEvent();
 
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
         eventUserRequest.setCategory(999L); // Категория не существует
 
         NotFoundException exception = assertThrows(
@@ -261,7 +260,7 @@ public class EventServiceImpCreateAndUpdateTest {
     void updateEventByPrivate_ValidRequest_ReturnsUpdatedEvent() {
         Event event = createTestEvent();
 
-        UpdateEventUserRequest eventUserRequest = new UpdateEventUserRequest();
+        UpdateEventRequest eventUserRequest = new UpdateEventRequest();
         eventUserRequest.setTitle("Updated Title");
 
         EventFullDto result = eventService.updateEventByPrivate(testUser.getId(), event.getId(), eventUserRequest);

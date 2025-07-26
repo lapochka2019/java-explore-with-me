@@ -14,7 +14,7 @@ import ru.practicum.ewm.event.controller.PrivateEventController;
 import ru.practicum.ewm.event.dto.EventCreateDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
-import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
+import ru.practicum.ewm.event.dto.UpdateEventRequest;
 import ru.practicum.ewm.event.service.EventService;
 
 import java.util.Collection;
@@ -75,7 +75,7 @@ public class PrivateEventControllerTest {
     void updateEvent_correctRequest_shouldReturnUpdatedEvent() throws Exception {
         Long userId = 1L;
         Long eventId = 1L;
-        UpdateEventUserRequest updateRequest = new UpdateEventUserRequest();
+        UpdateEventRequest updateRequest = new UpdateEventRequest();
         updateRequest.setTitle("Updated Title");
         updateRequest.setDescription("This is an updated description with more than 20 characters");
 
@@ -84,7 +84,7 @@ public class PrivateEventControllerTest {
         updatedEvent.setTitle("Updated Title");
         updatedEvent.setDescription("This is an updated description with more than 20 characters");
 
-        when(eventService.updateEventByPrivate(eq(userId), eq(eventId), any(UpdateEventUserRequest.class)))
+        when(eventService.updateEventByPrivate(eq(userId), eq(eventId), any(UpdateEventRequest.class)))
                 .thenReturn(updatedEvent);
 
         mockMvc.perform(patch("/users/{userId}/events/{eventId}", userId, eventId)
@@ -95,7 +95,7 @@ public class PrivateEventControllerTest {
                 .andExpect(jsonPath("$.title").value("Updated Title"))
                 .andExpect(jsonPath("$.description").value("This is an updated description with more than 20 characters"));
 
-        verify(eventService, times(1)).updateEventByPrivate(eq(userId), eq(eventId), any(UpdateEventUserRequest.class));
+        verify(eventService, times(1)).updateEventByPrivate(eq(userId), eq(eventId), any(UpdateEventRequest.class));
     }
 
     @DisplayName("Успешное получение события пользователя")

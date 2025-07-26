@@ -83,17 +83,14 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest adminRequest) {
+    public EventFullDto updateEventByAdmin(Long eventId, UpdateEventRequest adminRequest) {
         Event event = getEventById(eventId);
 
         LocalDateTime eventDate = (adminRequest.getEventDate() != null) ? adminRequest.getEventDate() : event.getEventDate();
         validateEventDateForAdmin(eventDate, adminRequest.getStateAction());
         validateStatusForAdmin(event.getState(), adminRequest.getStateAction());
 
-        updateEventFields(event, Optional.ofNullable(adminRequest.getAnnotation()), Optional.ofNullable(adminRequest.getDescription()),
-                eventDate, Optional.ofNullable(adminRequest.getPaid()), Optional.ofNullable(adminRequest.getParticipantLimit()),
-                Optional.ofNullable(adminRequest.getRequestModeration()), Optional.ofNullable(adminRequest.getTitle()),
-                adminRequest.getCategory());
+        updateEventFields(event, adminRequest);
 
         processStateAction(event, adminRequest.getStateAction());
 
@@ -102,7 +99,7 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByPrivate(Long userId, Long eventId, UpdateEventUserRequest eventUserRequest) {
+    public EventFullDto updateEventByPrivate(Long userId, Long eventId, UpdateEventRequest eventUserRequest) {
         User user = getUserById(userId);
         Event event = getEventById(eventId);
 
@@ -114,10 +111,7 @@ public class EventServiceImp implements EventService {
         LocalDateTime eventDate = (eventUserRequest.getEventDate() != null) ? eventUserRequest.getEventDate() : event.getEventDate();
         validateEventDate(eventDate);
 
-        updateEventFields(event, Optional.ofNullable(eventUserRequest.getAnnotation()), Optional.ofNullable(eventUserRequest.getDescription()),
-                eventDate, Optional.ofNullable(eventUserRequest.getPaid()), Optional.ofNullable(eventUserRequest.getParticipantLimit()),
-                Optional.ofNullable(eventUserRequest.getRequestModeration()), Optional.ofNullable(eventUserRequest.getTitle()),
-                eventUserRequest.getCategory());
+        updateEventFields(event, eventUserRequest);
 
         processStateAction(event, eventUserRequest.getStateAction());
 
@@ -344,21 +338,31 @@ public class EventServiceImp implements EventService {
                 .orElseThrow(() -> new NotFoundException("Событие c ID " + eventId + " не найдено"));
     }
 
-    private void updateEventFields(Event event, Optional<String> annotation, Optional<String> description,
-                                   LocalDateTime eventDate, Optional<Boolean> paid, Optional<Integer> participantLimit,
-                                   Optional<Boolean> requestModeration, Optional<String> title, Long categoryId) {
+    private void updateEventFields(Event event, UpdateEventRequest adminRequest) {
 
-        annotation.ifPresent(event::setAnnotation);
-        description.ifPresent(event::setDescription);
-        event.setEventDate(eventDate);
-        paid.ifPresent(event::setPaid);
-        participantLimit.ifPresent(event::setParticipantLimit);
-        requestModeration.ifPresent(event::setRequestModeration);
-        title.ifPresent(event::setTitle);
+        if (adminRequest.getAnnotation() != null) {
+            event.setAnnotation(adminRequest.getAnnotation());
+        }
+        if (adminRequest.getDescription() != null) {
+            event.setDescription(adminRequest.getDescription());
+        }
+        event.setEventDate(adminRequest.getEventDate());
+        if (adminRequest.getPaid() != null) {
+            event.setPaid(adminRequest.getPaid());
+        }
+        if (adminRequest.getParticipantLimit() != null) {
+            event.setParticipantLimit(adminRequest.getParticipantLimit());
+        }
+        if (adminRequest.getRequestModeration() != null) {
+            event.setRequestModeration(adminRequest.getRequestModeration());
+        }
+        if (adminRequest.getTitle() != null) {
+            event.setTitle(adminRequest.getTitle());
+        }
 
-        if (categoryId != null) {
-            Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new NotFoundException("Категория с ID " + categoryId + " не найдена"));
+        if (adminRequest.getCategory() != null) {
+            Category category = categoryRepository.findById(adminRequest.getCategory())
+                    .orElseThrow(() -> new NotFoundException("Категория с ID " + adminRequest.getCategory() + " не найдена"));
             event.setCategory(category);
         }
     }

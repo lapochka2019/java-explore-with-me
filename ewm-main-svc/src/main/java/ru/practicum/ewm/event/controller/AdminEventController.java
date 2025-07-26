@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventSearchDto;
-import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.event.dto.UpdateEventRequest;
 import ru.practicum.ewm.event.service.EventService;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ public class AdminEventController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventFullDto update(@PathVariable Long eventId, @RequestBody @Valid UpdateEventAdminRequest eventDto) {
+    public EventFullDto update(@PathVariable Long eventId, @RequestBody @Valid UpdateEventRequest eventDto) {
         log.info("Запрос на обновление события {} с телом {}", eventId, eventDto);
         EventFullDto event = eventService.updateEventByAdmin(eventId, eventDto);
         log.info("Отправлен ответ: {}", event);

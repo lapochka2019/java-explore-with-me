@@ -13,7 +13,7 @@ import ru.practicum.ewm.categories.dto.CategoryDto;
 import ru.practicum.ewm.event.controller.AdminEventController;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventSearchDto;
-import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.event.dto.UpdateEventRequest;
 import ru.practicum.ewm.event.service.EventService;
 import ru.practicum.ewm.location.dto.LocationDto;
 import ru.practicum.ewm.user.dto.UserShortDto;
@@ -98,13 +98,13 @@ public class AdminEventControllerTest {
     @Test
     void updateEvent_correctRequest_shouldReturnUpdatedEvent() throws Exception {
         Long eventId = 1L;
-        UpdateEventAdminRequest updateRequest = new UpdateEventAdminRequest();
+        UpdateEventRequest updateRequest = new UpdateEventRequest();
         updateRequest.setTitle("Updated Title");
         updateRequest.setDescription("Updated Description Updated Description");
 
         EventFullDto updatedEvent = createEventFullDto(1L, "Updated Title", "Updated Description Updated Description");
 
-        when(eventService.updateEventByAdmin(eq(eventId), any(UpdateEventAdminRequest.class)))
+        when(eventService.updateEventByAdmin(eq(eventId), any(UpdateEventRequest.class)))
                 .thenReturn(updatedEvent);
 
         mockMvc.perform(patch("/admin/events/{eventId}", eventId)
@@ -127,7 +127,7 @@ public class AdminEventControllerTest {
                 .andExpect(jsonPath("$.views").isNumber())
                 .andExpect(jsonPath("$.confirmedRequests").isNumber());
 
-        verify(eventService, times(1)).updateEventByAdmin(eq(eventId), any(UpdateEventAdminRequest.class));
+        verify(eventService, times(1)).updateEventByAdmin(eq(eventId), any(UpdateEventRequest.class));
     }
 
     private EventFullDto createEventFullDto(Long id, String title, String description) {

@@ -8,9 +8,9 @@ import java.util.Collection;
 public interface EventService {
     EventFullDto create(Long userId, EventCreateDto eventCreateDto);
 
-    EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest adminRequest);
+    EventFullDto updateEventByAdmin(Long eventId, UpdateEventRequest adminRequest);
 
-    EventFullDto updateEventByPrivate(Long userId, Long eventId, UpdateEventUserRequest eventUserRequest);
+    EventFullDto updateEventByPrivate(Long userId, Long eventId, UpdateEventRequest eventUserRequest);
 
     EventFullDto getEventOfUser(Long userId, Long eventId);
 

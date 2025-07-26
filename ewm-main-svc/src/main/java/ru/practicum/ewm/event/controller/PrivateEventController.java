@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.event.dto.EventCreateDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
-import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
+import ru.practicum.ewm.event.dto.UpdateEventRequest;
 import ru.practicum.ewm.event.service.EventService;
 
 import java.util.Collection;
@@ -34,7 +34,7 @@ public class PrivateEventController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventFullDto update(@PathVariable Long userId, @PathVariable Long eventId, @RequestBody @Valid UpdateEventUserRequest eventDto) {
+    public EventFullDto update(@PathVariable Long userId, @PathVariable Long eventId, @RequestBody @Valid UpdateEventRequest eventDto) {
         log.info("Запрос пользователя {} на обновление события {} данными {}", userId, eventId, eventDto);
         EventFullDto event = eventService.updateEventByPrivate(userId, eventId, eventDto);
         log.info("Обновленное событие: {}", event);
