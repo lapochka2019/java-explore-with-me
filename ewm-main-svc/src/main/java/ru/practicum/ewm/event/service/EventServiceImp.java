@@ -86,8 +86,8 @@ public class EventServiceImp implements EventService {
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventRequest adminRequest) {
         Event event = getEventById(eventId);
 
-        LocalDateTime eventDate = (adminRequest.getEventDate() != null) ? adminRequest.getEventDate() : event.getEventDate();
-        validateEventDateForAdmin(eventDate, adminRequest.getStateAction());
+//        LocalDateTime eventDate = (adminRequest.getEventDate() != null) ? adminRequest.getEventDate() : event.getEventDate();
+//        validateEventDateForAdmin(eventDate, adminRequest.getStateAction());
         validateStatusForAdmin(event.getState(), adminRequest.getStateAction());
 
         updateEventFields(event, adminRequest);
@@ -108,8 +108,8 @@ public class EventServiceImp implements EventService {
         if (event.getState() == EventState.PUBLISHED) {
             throw new ConflictException("Нельзя изменить опубликованное событие");
         }
-        LocalDateTime eventDate = (eventUserRequest.getEventDate() != null) ? eventUserRequest.getEventDate() : event.getEventDate();
-        validateEventDate(eventDate);
+        //LocalDateTime eventDate = (eventUserRequest.getEventDate() != null) ? eventUserRequest.getEventDate() : event.getEventDate();
+        //validateEventDate(eventDate);
 
         updateEventFields(event, eventUserRequest);
 
@@ -359,7 +359,10 @@ public class EventServiceImp implements EventService {
         if (adminRequest.getTitle() != null) {
             event.setTitle(adminRequest.getTitle());
         }
-
+        if (adminRequest.getEventDate() != null) {
+            validateEventDate(adminRequest.getEventDate());
+            event.setEventDate(adminRequest.getEventDate());
+        }
         if (adminRequest.getCategory() != null) {
             Category category = categoryRepository.findById(adminRequest.getCategory())
                     .orElseThrow(() -> new NotFoundException("Категория с ID " + adminRequest.getCategory() + " не найдена"));
