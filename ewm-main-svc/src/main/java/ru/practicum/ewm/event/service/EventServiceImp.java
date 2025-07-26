@@ -45,7 +45,6 @@ public class EventServiceImp implements EventService {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     static int MIN_HOURS_BEFORE_EVENT = 2;
-    static int MIN_HOURS_BEFORE_PUBLISH = 1;
 
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
@@ -86,8 +85,6 @@ public class EventServiceImp implements EventService {
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventRequest adminRequest) {
         Event event = getEventById(eventId);
 
-//        LocalDateTime eventDate = (adminRequest.getEventDate() != null) ? adminRequest.getEventDate() : event.getEventDate();
-//        validateEventDateForAdmin(eventDate, adminRequest.getStateAction());
         validateStatusForAdmin(event.getState(), adminRequest.getStateAction());
 
         updateEventFields(event, adminRequest);
@@ -108,9 +105,6 @@ public class EventServiceImp implements EventService {
         if (event.getState() == EventState.PUBLISHED) {
             throw new ConflictException("Нельзя изменить опубликованное событие");
         }
-        //LocalDateTime eventDate = (eventUserRequest.getEventDate() != null) ? eventUserRequest.getEventDate() : event.getEventDate();
-        //validateEventDate(eventDate);
-
         updateEventFields(event, eventUserRequest);
 
         processStateAction(event, eventUserRequest.getStateAction());
@@ -300,15 +294,6 @@ public class EventServiceImp implements EventService {
         }
     }
 
-    private void validateEventDateForAdmin(LocalDateTime eventDate, StateAction stateAction) {
-        if (eventDate.isBefore(LocalDateTime.now().plusHours(MIN_HOURS_BEFORE_EVENT))) {
-            throw new ValidationException("Дата мероприятия должна быть на " + MIN_HOURS_BEFORE_EVENT + "часа раньше текущего момента");
-        }
-        if (stateAction != null && stateAction.equals(StateAction.PUBLISH_EVENT) && eventDate.isBefore(LocalDateTime.now().plusHours(MIN_HOURS_BEFORE_PUBLISH))) {
-            throw new ValidationException("Дата события должна быть на " + MIN_HOURS_BEFORE_PUBLISH + " час раньше момента публикации");
-        }
-    }
-
     private void validateStatusForAdmin(EventState state, StateAction stateAction) {
         if (stateAction != null && !stateAction.equals(StateAction.REJECT_EVENT) && !stateAction.equals(StateAction.PUBLISH_EVENT)) {
             throw new ForbiddenException("Неизвестный state action");
@@ -346,7 +331,6 @@ public class EventServiceImp implements EventService {
         if (adminRequest.getDescription() != null) {
             event.setDescription(adminRequest.getDescription());
         }
-        event.setEventDate(adminRequest.getEventDate());
         if (adminRequest.getPaid() != null) {
             event.setPaid(adminRequest.getPaid());
         }

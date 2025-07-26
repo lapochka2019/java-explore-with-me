@@ -32,7 +32,7 @@ public class AdminEventController {
     public EventFullDto update(@PathVariable Long eventId, @RequestBody @Valid UpdateEventRequest eventDto) {
         log.info("Запрос на обновление события {} с телом {}", eventId, eventDto);
         EventFullDto event = eventService.updateEventByAdmin(eventId, eventDto);
-        log.info("Отправлен ответ: {}", event);
+        log.info("Обновленное событие: {}", event);
         return event;
     }
 }

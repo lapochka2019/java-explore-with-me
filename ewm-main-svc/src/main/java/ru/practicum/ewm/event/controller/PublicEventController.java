@@ -29,7 +29,7 @@ public class PublicEventController {
                                                      HttpServletRequest request) {
         log.info("Запрос на получения событий с фильтром");
         Collection<EventShortDto> events = eventService.findAllByPublic(searchEventParams, request);
-        log.info("Отправлен ответ GET /events с телом: {}", events);
+        log.info("Отправлен ответ с телом: {}", events);
         return events;
     }
 
