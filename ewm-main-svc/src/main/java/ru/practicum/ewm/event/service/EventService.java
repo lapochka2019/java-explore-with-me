@@ -1,0 +1,25 @@
+package ru.practicum.ewm.event.service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import ru.practicum.ewm.event.dto.*;
+
+import java.util.Collection;
+
+public interface EventService {
+    EventFullDto create(Long userId, EventCreateDto eventCreateDto);
+
+    EventFullDto updateEventByAdmin(Long eventId, UpdateEventRequest adminRequest);
+
+    EventFullDto updateEventByPrivate(Long userId, Long eventId, UpdateEventRequest eventUserRequest);
+
+    EventFullDto getEventOfUser(Long userId, Long eventId);
+
+    Collection<EventShortDto> findAllByPublic(EventSearchDto searchDto, HttpServletRequest request);
+
+    Collection<EventShortDto> findAllByPrivate(Long userId, Integer from, Integer size, HttpServletRequest request);
+
+    Collection<EventFullDto> findAllByAdmin(EventSearchDto searchDto, HttpServletRequest request);
+
+    EventFullDto findEventById(Long eventId, HttpServletRequest request);
+
+}
