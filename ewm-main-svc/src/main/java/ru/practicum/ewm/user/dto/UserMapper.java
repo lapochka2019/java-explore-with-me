@@ -8,6 +8,7 @@ import ru.practicum.ewm.user.model.User;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "allowSubscriptions", ignore = true)
     User toUser(UserCreateDto userCreateDto);
 
     UserShortDto toShortDto(User user);

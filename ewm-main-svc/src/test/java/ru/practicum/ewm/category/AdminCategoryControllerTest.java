@@ -35,7 +35,7 @@ public class AdminCategoryControllerTest {
     private CategoryService categoryService;
 
     @MockBean
-    private CategoryRepository categoryRepository; // если используется в CategoryService
+    private CategoryRepository categoryRepository;
 
     @DisplayName("Успешное создание категории")
     @Test

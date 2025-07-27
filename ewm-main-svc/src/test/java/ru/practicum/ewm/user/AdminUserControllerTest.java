@@ -46,7 +46,7 @@ public class AdminUserControllerTest {
     void createUser_correctUser_shouldReturnCreated() throws Exception {
         UserCreateDto dto = new UserCreateDto("User Name", "user@mail.ru");
 
-        User createdUser = new User(1L, "User Name", "user@mail.ru");
+        User createdUser = new User(1L, "User Name", "user@mail.ru", true);
 
         when(userService.createUser(any(UserCreateDto.class))).thenReturn(createdUser);
 
@@ -105,8 +105,8 @@ public class AdminUserControllerTest {
     @Test
     void getAllUsers_nullIdList_shouldReturnOk() throws Exception {
         List<User> users = List.of(
-                new User(1L, "John",  "user1@example.com"),
-                new User(2L, "Jane",  "user2@example.com")
+                new User(1L, "John",  "user1@example.com", true),
+                new User(2L, "Jane",  "user2@example.com", true)
         );
 
         when(userService.getAllUsers(any(), anyInt(), anyInt())).thenReturn(users);
@@ -121,7 +121,7 @@ public class AdminUserControllerTest {
     void getAllUsers_allParams_shouldReturnOkWithFilter() throws Exception {
         List<Long> ids = Arrays.asList(1L, 2L);
         List<User> users = List.of(
-                new User(1L, "John",  "user1@example.com")
+                new User(1L, "John",  "user1@example.com", true)
         );
 
         when(userService.getAllUsers(anyList(), anyInt(), anyInt())).thenReturn(users);
