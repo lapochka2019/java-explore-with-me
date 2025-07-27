@@ -18,4 +18,6 @@ public class User {
     private String name;
     @Column(nullable = false, unique = true, length = 254)
     private String email;
+    @Column(name = "allow_subscriptions", nullable = false)
+    boolean allowSubscriptions = true;
 }
